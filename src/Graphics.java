@@ -29,14 +29,17 @@ public class Graphics extends Canvas implements Runnable {
     private Sprite s;
     private Sprite square1;
     private Sprite square2;
+    private Sprite boll;
 
     private double t=0;
     private int xSquare1 = 0;
     private int ySquare1 = 0;
-    private int vxSquare1 = 0;
-    private int vySquare1 = 0;
-    private int xSquare2 = 100;
-    private int ySquare2 = 100;
+    private int vxSquare1 = 200;
+    private int vySquare1 = 230;
+    private int xSquare2 = 0;
+    private int ySquare2 = 0;
+    private int xBoll = 0;
+    private int yBoll = 0;
 
     public Graphics(int w, int h, int scale) {
         this.width = w;
@@ -59,8 +62,9 @@ public class Graphics extends Canvas implements Runnable {
         this.requestFocus();
 
         s = new Sprite("sprite.png");
-        square1 = new Sprite(16,16,0xFF00FF);
+        square1 = new Sprite(48,8,0xFF00FF);
         square2 = new Sprite(32,8,0x00FF00);
+        boll = new Sprite("sprite_2.png");
     }
 
     private void draw() {
@@ -90,6 +94,12 @@ public class Graphics extends Canvas implements Runnable {
         for (int i = 0 ; i < s.getHeight() ; i++) {
             for (int j = 0 ; j < s.getWidth() ; j++) {
                 pixels[(y+i)*width + x+j] = s.getPixels()[i*s.getWidth()+j];
+            }
+        }
+        //boll
+        for (int i = 0 ; i < boll.getHeight() ; i++) {
+            for (int j = 0 ; j < boll.getWidth() ; j++) {
+                pixels[(yBoll+i)*width + xBoll+j] = boll.getPixels()[i*boll.getWidth()+j];
             }
         }
 
@@ -166,10 +176,10 @@ public class Graphics extends Canvas implements Runnable {
                 vxSquare1 = -5;
             } else if (keyEvent.getKeyChar()=='d') {
                 vxSquare1 = 5;
-            } else if (keyEvent.getKeyChar()=='w') {
+           /* } else if (keyEvent.getKeyChar()=='w') {
                 vySquare1 = -5;
             } else if (keyEvent.getKeyChar()=='s') {
-                vySquare1 = 5;
+                vySquare1 = 5; */
             }
         }
 
