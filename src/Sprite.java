@@ -32,7 +32,7 @@ public class Sprite {
             pixels[i] = col;
         }
     }
-// hejsan
+
     public Sprite(String path) {
         BufferedImage image = null;
         try {

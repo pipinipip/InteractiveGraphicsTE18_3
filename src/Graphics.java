@@ -7,6 +7,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+
 /**
  * This is a class
  * Created 2020-03-25
@@ -17,35 +18,26 @@ public class Graphics extends Canvas implements Runnable {
     private String title = "Graphics";
     private int width;
     private int height;
+
     private JFrame frame;
     private BufferedImage image;
     private int[] pixels;
     private int scale;
+
     private Thread thread;
     private boolean running = false;
     private int fps = 60;
-    private int ups = 30;
+    private int ups = 60;
 
-    private Sprite s;
-    private Sprite square1;
-    private Sprite square2;
-    private Sprite boll;
-
-    private double t=0;
-    private int xSquare1 = 0;
-    private int ySquare1 = 0;
-    private int vxSquare1 = 200;
-    private int vySquare1 = 230;
-    private int xSquare2 = 0;
-    private int ySquare2 = 0;
-    private int xBoll = 0;
-    private int yBoll = 0;
+    private Ball b;
+    private Paddle paddle;
 
     public Graphics(int w, int h, int scale) {
         this.width = w;
         this.height = h;
         this.scale = scale;
-        image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+        image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+
         pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
         Dimension size = new Dimension(scale*width, scale*height);
         setPreferredSize(size);
@@ -61,70 +53,33 @@ public class Graphics extends Canvas implements Runnable {
         this.addMouseListener(new MyMouseListener());
         this.requestFocus();
 
-        s = new Sprite("sprite.png");
-        square1 = new Sprite(48,8,0xFF00FF);
-        square2 = new Sprite(32,8,0x00FF00);
-        boll = new Sprite("sprite_2.png");
+        b = new Ball(200,100);
+        paddle = new Paddle(200,299,0xFFFF0000);
     }
 
     private void draw() {
+        for (int i = 0 ; i < pixels.length ; i++) {
+            pixels[i] = 0xFF000000;
+        }
+        b.draw(pixels,width);
+        paddle.draw(pixels,width);
+
         BufferStrategy bs = getBufferStrategy();
         if (bs == null) {
             createBufferStrategy(3);
             return;
         }
+
         java.awt.Graphics g = bs.getDrawGraphics();
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
         g.dispose();
         bs.show();
     }
+
     private void update() {
-        for (int i = 0 ; i < pixels.length ; i++) {
-            pixels[i] = 0;
-        }
-        // The mario sprite
 
-        /* Parametric curve (a circle) see https://en.wikipedia.org/wiki/Parametric_equation
-           t controls the coordinates as (x(t),y(t)). Here t is increased by 2 degrees (pi/180 rad)
-           each timestep.
-        */
-        t += Math.PI/180;
-        int x = (int)(width/2+(width/2-s.getWidth())*Math.sin(t));
-        int y = (int)(height/2+(height/2-s.getHeight())*Math.cos(t));
-        for (int i = 0 ; i < s.getHeight() ; i++) {
-            for (int j = 0 ; j < s.getWidth() ; j++) {
-                pixels[(y+i)*width + x+j] = s.getPixels()[i*s.getWidth()+j];
-            }
-        }
-        //boll
-        for (int i = 0 ; i < boll.getHeight() ; i++) {
-            for (int j = 0 ; j < boll.getWidth() ; j++) {
-                pixels[(yBoll+i)*width + xBoll+j] = boll.getPixels()[i*boll.getWidth()+j];
-            }
-        }
-
-        // The moving magenta square
-        if (xSquare1 + vxSquare1 < 0 || xSquare1 + vxSquare1 > width - square1.getWidth())
-            vxSquare1 = 0;
-        if (ySquare1 + vySquare1 < 0 || ySquare1 + vySquare1 > height - square1.getHeight())
-            vySquare1 = 0;
-
-        xSquare1 += vxSquare1;
-        ySquare1 += vySquare1;
-
-        for (int i = 0 ; i < square1.getHeight() ; i++) {
-            for (int j = 0 ; j < square1.getWidth() ; j++) {
-                pixels[(ySquare1+i)*width + xSquare1+j] = square1.getPixels()[i*square1.getWidth()+j];
-            }
-        }
-
-        // The mouse-controlled square
-        for (int i = 0 ; i < square2.getHeight() ; i++) {
-            for (int j = 0 ; j < square2.getWidth() ; j++) {
-                pixels[(ySquare2+i)*width + xSquare2+j] = square2.getPixels()[i*square2.getWidth()+j];
-            }
-        }
-
+        b.update(paddle.getBoundingBox());
+        paddle.update();
     }
 
     public synchronized void start() {
@@ -132,6 +87,7 @@ public class Graphics extends Canvas implements Runnable {
         thread = new Thread(this);
         thread.start();
     }
+
     public synchronized void stop() {
         running = false;
         try {
@@ -140,6 +96,7 @@ public class Graphics extends Canvas implements Runnable {
             e.printStackTrace();
         }
     }
+
     @Override
     public void run() {
         double frameUpdateinteval = 1000000000.0 / fps;
@@ -147,15 +104,18 @@ public class Graphics extends Canvas implements Runnable {
         double deltaFrame = 0;
         double deltaUpdate = 0;
         long lastTime = System.nanoTime();
+
         while (running) {
             long now = System.nanoTime();
             deltaFrame += (now - lastTime) / frameUpdateinteval;
             deltaUpdate += (now - lastTime) / stateUpdateinteval;
             lastTime = now;
+
             while (deltaUpdate >= 1) {
                 update();
                 deltaUpdate--;
             }
+
             while (deltaFrame >= 1) {
                 draw();
                 deltaFrame--;
@@ -172,24 +132,12 @@ public class Graphics extends Canvas implements Runnable {
 
         @Override
         public void keyPressed(KeyEvent keyEvent) {
-            if (keyEvent.getKeyChar()=='a') {
-                vxSquare1 = -5;
-            } else if (keyEvent.getKeyChar()=='d') {
-                vxSquare1 = 5;
-           /* } else if (keyEvent.getKeyChar()=='w') {
-                vySquare1 = -5;
-            } else if (keyEvent.getKeyChar()=='s') {
-                vySquare1 = 5; */
-            }
+            paddle.keyPressed(keyEvent);
         }
 
         @Override
         public void keyReleased(KeyEvent keyEvent) {
-            if (keyEvent.getKeyChar()=='a' || keyEvent.getKeyChar()=='d') {
-                vxSquare1 = 0;
-            } else if (keyEvent.getKeyChar()=='w' || keyEvent.getKeyChar()=='s') {
-                vySquare1 = 0;
-            }
+            paddle.keyReleased(keyEvent);
         }
     }
 
@@ -200,8 +148,6 @@ public class Graphics extends Canvas implements Runnable {
 
         @Override
         public void mousePressed(MouseEvent mouseEvent) {
-            xSquare2 = mouseEvent.getX()/scale;
-            ySquare2 = mouseEvent.getY()/scale;
         }
 
         @Override
@@ -211,15 +157,10 @@ public class Graphics extends Canvas implements Runnable {
 
         @Override
         public void mouseEntered(MouseEvent mouseEvent) {
-            square2.setColor(0x00FF00);
         }
 
         @Override
         public void mouseExited(MouseEvent mouseEvent) {
-            square2.setColor(0xFF0000);
         }
     }
 }
-
-
-
