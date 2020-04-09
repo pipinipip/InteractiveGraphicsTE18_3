@@ -32,7 +32,12 @@ public class Graphics extends Canvas implements Runnable {
     private Ball b;
     private Paddle paddle;
     private Lada lada;
-
+    private Lada lada1;
+    private Lada lada2;
+    private Lada lada3;
+    private Lada lada4;
+    private Lada lada5;
+    private Lada lada6;
     public Graphics(int w, int h, int scale) {
         this.width = w;
         this.height = h;
@@ -57,6 +62,13 @@ public class Graphics extends Canvas implements Runnable {
         b = new Ball(200,100);
         paddle = new Paddle(200,299,0xFFFF0000);
         lada = new Lada(10,10,0xFFFFFFFF);
+        lada1 = new Lada(10,30,0xFFFFFFFF);
+        lada2 = new Lada(10,50,0xFFFFFFFF);
+        lada3 = new Lada(10,70,0xFFFFFFFF);
+        lada4 = new Lada(10,90,0xFFFFFFFF);
+        lada5 = new Lada(10,110,0xFFFFFFFF);
+        lada6 = new Lada(80,110,0xFFFFFFFF);
+        
     }
 
     private void draw() {
@@ -66,6 +78,12 @@ public class Graphics extends Canvas implements Runnable {
         b.draw(pixels,width);
         paddle.draw(pixels,width);
         lada.draw(pixels,width);
+        lada1.draw(pixels,width);
+        lada2.draw(pixels,width);
+        lada3.draw(pixels,width);
+        lada4.draw(pixels,width);
+        lada5.draw(pixels,width);
+        lada6.draw(pixels,width);
         BufferStrategy bs = getBufferStrategy();
         if (bs == null) {
             createBufferStrategy(3);
