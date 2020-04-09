@@ -68,7 +68,7 @@ public class Graphics extends Canvas implements Runnable {
         lada4 = new Lada(10,90,0xFFFFFFFF);
         lada5 = new Lada(10,110,0xFFFFFFFF);
         lada6 = new Lada(80,110,0xFFFFFFFF);
-        
+//finns det något bättre sätt att lägga till lådor :(
     }
 
     private void draw() {
