@@ -32,6 +32,19 @@ public class Lada {
 
 
                 }
+
             }
+
         }
+    public void collision(Rectangle re){
+    if(boundingBox.intersects(re)) {
+        if (Math.abs(re.x - (boundingBox.x + boundingBox.width)){
+        }
+
     }
+    public void update(Rectangle re) {
+        collision(re);
+        collision(re);
+    }
+}
+}

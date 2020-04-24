@@ -7,6 +7,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.util.ArrayList;
 
 /**
  * This is a class
@@ -31,7 +32,7 @@ public class Graphics extends Canvas implements Runnable {
 
     private Ball b;
     private Paddle paddle;
-    private Lada lada;
+    private ArrayList <Lada> lador;
     private Lada lada1;
     private Lada lada2;
     private Lada lada3;
@@ -84,7 +85,7 @@ public class Graphics extends Canvas implements Runnable {
 
         b = new Ball(200,100);
         paddle = new Paddle(200,299,0xFFFF0000);
-        lada = new Lada(10,10,0xFFFFFFFF);
+        lador.add(new Lada(10,10,0xFFFFFFFF));
         lada1 = new Lada(10,30,0xFFFFFFFF);
         lada2 = new Lada(10,50,0xFFFFFFFF);
         lada3 = new Lada(10,70,0xFFFFFFFF);
@@ -123,36 +124,9 @@ public class Graphics extends Canvas implements Runnable {
         }
         b.draw(pixels,width);
         paddle.draw(pixels,width);
-        lada.draw(pixels,width);
-        lada1.draw(pixels,width);
-        lada2.draw(pixels,width);
-        lada3.draw(pixels,width);
-        lada4.draw(pixels,width);
-        lada5.draw(pixels,width);
-        lada6.draw(pixels,width);
-        lada7.draw(pixels,width);
-        lada8.draw(pixels,width);
-        lada9.draw(pixels,width);
-        lada10.draw(pixels,width);
-        lada11.draw(pixels,width);
-        lada12.draw(pixels,width);
-        lada13.draw(pixels,width);
-        lada14.draw(pixels,width);
-        lada15.draw(pixels,width);
-        lada16.draw(pixels,width);
-        lada17.draw(pixels,width);
-        lada18.draw(pixels,width);
-        lada19.draw(pixels,width);
-        lada20.draw(pixels,width);
-        lada21.draw(pixels,width);
-        lada22.draw(pixels,width);
-        lada23.draw(pixels,width);
-        lada24.draw(pixels,width);
-        lada25.draw(pixels,width);
-        lada26.draw(pixels,width);
-        lada27.draw(pixels,width);
-        lada28.draw(pixels,width);
-        lada29.draw(pixels,width);
+        for (int i=0; i<lador.size(); i++)
+            lador.get(i).draw(pixels,width);
+
 
         BufferStrategy bs = getBufferStrategy();
         if (bs == null) {
