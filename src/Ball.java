@@ -75,7 +75,12 @@ public class Ball {
                 setYDirection(1);
             }
         }
-    }
+        if(boundingBox.intersects(r)) {
+
+
+        }
+        }
+
 
     public void move() {
         boundingBox.x += xDirection;

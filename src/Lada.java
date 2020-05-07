@@ -22,29 +22,36 @@ public class Lada {
             return boundingBox;
         }
 
+    public void update(){
+
+        if(boundingBox.x <= 0) {
+            boundingBox.x = 0;
+        }
+        if(boundingBox.x >= 340) {
+            boundingBox.x = 340;
+        }
+
+        if(boundingBox.y <= 0) {
+            boundingBox.y = 0;
+        }
+        if(boundingBox.y >= 280) {
+            boundingBox.y = 280;
+        }
+    }
+
 
 
         public void draw(int[] Screen, int screenWidth){
             for (int i = 0 ; i < height ; i++) {
                 for (int j = 0 ; j < width ; j++) {
                     Screen[(boundingBox.y+i)*screenWidth + boundingBox.x+j] = pixels[i*width+j];
-
-
-
                 }
 
             }
 
         }
-    public void collision(Rectangle re){
-    if(boundingBox.intersects(re)) {
-        if (Math.abs(re.x - (boundingBox.x + boundingBox.width)){
-        }
 
-    }
-    public void update(Rectangle re) {
-        collision(re);
-        collision(re);
-    }
-}
+
+
+
 }
