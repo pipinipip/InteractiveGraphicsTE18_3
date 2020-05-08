@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.*;
 import java.awt.Graphics;
 import java.util.Random;
@@ -94,7 +95,15 @@ public class Ball {
             setXDirection(-1);
         }
         if (boundingBox.y <= 0) setYDirection(+1);
-        if (boundingBox.y >= 285) setYDirection(-1);
+        // Stops the ball when the botton edge is detected
+        if (boundingBox.y >= 290) {
+            boundingBox.x = 190;
+            boundingBox.y = 130;
+            setYDirection(0);
+            setXDirection(0);
+            JOptionPane.showMessageDialog(null,"You lost" );
+
+        }
     }
 
     public void update(Rectangle r) {
