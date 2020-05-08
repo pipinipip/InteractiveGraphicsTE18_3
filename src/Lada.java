@@ -18,12 +18,11 @@ public class Lada {
             }
         }
 
-        public Rectangle getBoundingBox() {
+        public Rectangle getBoundingBox1() {
             return boundingBox;
         }
 
-    public void update(){
-
+    public void update() {
         if(boundingBox.x <= 0) {
             boundingBox.x = 0;
         }
@@ -38,6 +37,7 @@ public class Lada {
             boundingBox.y = 280;
         }
     }
+
 
 
 

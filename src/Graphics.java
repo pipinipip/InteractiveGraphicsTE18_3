@@ -1,3 +1,5 @@
+import com.sun.corba.se.spi.presentation.rmi.PresentationManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -90,7 +92,12 @@ public class Graphics extends Canvas implements Runnable {
 
         b.update(paddle.getBoundingBox());
         paddle.update();
-        paddle.update();
+
+        for (int i=0; i<lador.size(); i++)
+        b.update(lador.get(i).getBoundingBox1());
+
+
+
 
     }
 
