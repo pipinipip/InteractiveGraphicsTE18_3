@@ -41,7 +41,7 @@ public class Lada {
 
 
 
-        public void draw(int[] Screen, int screenWidth){
+       public void draw(int[] Screen, int screenWidth){
             for (int i = 0 ; i < height ; i++) {
                 for (int j = 0 ; j < width ; j++) {
                     Screen[(boundingBox.y+i)*screenWidth + boundingBox.x+j] = pixels[i*width+j];

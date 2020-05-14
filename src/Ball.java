@@ -77,8 +77,12 @@ public class Ball {
             }
         }
         if(boundingBox.intersects(r)) {
+/*
 
+            for (int i=0; i<lador.size(); i++)
+                b.update(lador.get(i).getBoundingBox1());
 
+ */
         }
         }
 

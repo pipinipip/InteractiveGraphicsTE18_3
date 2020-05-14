@@ -93,8 +93,7 @@ public class Graphics extends Canvas implements Runnable {
         b.update(paddle.getBoundingBox());
         paddle.update();
 
-        for (int i=0; i<lador.size(); i++)
-        b.update(lador.get(i).getBoundingBox1());
+
 
 
 
