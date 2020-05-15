@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Ball {
@@ -64,7 +65,7 @@ public class Ball {
         }
     }
 
-    public void collision(Rectangle r){
+    public void collision(Rectangle r, ArrayList<Lada> lador){
         if(boundingBox.intersects(r)) {
             if (getXDirection() > 0 && Math.abs(r.x - (boundingBox.x + boundingBox.width)) <= getXDirection()) {
                 setXDirection(-1);
@@ -76,14 +77,23 @@ public class Ball {
                 setYDirection(1);
             }
         }
-        if(boundingBox.intersects(r)) {
-/*
+        for (int i=0; i<lador.size(); i++)
+         if (boundingBox.intersects((lador.get(i).getBoundingBox1())))
+         {
+             if (getXDirection() > 0 && Math.abs(lador.get(i).getBoundingBox1().x - (boundingBox.x + boundingBox.width)) <= getXDirection()) {
+                 setXDirection(-1);
+             } else if (getXDirection() < 0 && Math.abs(lador.get(i).getBoundingBox1().x + (lador.get(i).getBoundingBox1()).width - boundingBox.x) <= -getXDirection()) {
+                 setXDirection(+1);
+             } else if (getYDirection() > 0 && Math.abs(lador.get(i).getBoundingBox1().y - (boundingBox.y + boundingBox.height)) <= getYDirection()) {
+                 setYDirection(-1);
+             } else if (getYDirection() < 0 && Math.abs(lador.get(i).getBoundingBox1().y + (lador.get(i).getBoundingBox1()).height - boundingBox.y) <= -getYDirection()) {
+                 setYDirection(1);
+             }
+             lador.remove(i);
+             break;
 
-            for (int i=0; i<lador.size(); i++)
-                b.update(lador.get(i).getBoundingBox1());
 
- */
-        }
+         }
         }
 
 
@@ -108,11 +118,13 @@ public class Ball {
             JOptionPane.showMessageDialog(null,"You lost" );
 
         }
+
     }
 
-    public void update(Rectangle r) {
-        collision(r);
+    public void update(Rectangle r, ArrayList<Lada> lador) {
+        collision(r,lador);
         move();
-        collision(r);
+        collision(r,lador);
     }
+
 }

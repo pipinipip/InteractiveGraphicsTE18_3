@@ -57,12 +57,21 @@ public class Graphics extends Canvas implements Runnable {
         this.addMouseListener(new MyMouseListener());
         this.requestFocus();
 
-        b = new Ball(200,100);
+        b = new Ball(200,260);
         paddle = new Paddle(200,299,0xFFFF0000);
         lador=new ArrayList<>();
         lador.add(new Lada(10, 30, 0xFFFFFFFF));
         lador.add(new Lada(10, 70, 0xFFFFFFFF));
-
+        lador.add(new Lada(100, 30, 0xFFFFFFFF));
+        lador.add(new Lada(190, 30, 0xFFFFFFFF));
+        lador.add(new Lada(280, 30, 0xFFFFFFFF));
+        lador.add(new Lada(100, 70, 0xFFFFFFFF));
+        lador.add(new Lada(190, 70, 0xFFFFFFFF));
+        lador.add(new Lada(280, 70, 0xFFFFFFFF));
+        lador.add(new Lada(100, 110, 0xFFFFFFFF));
+        lador.add(new Lada(190, 110, 0xFFFFFFFF));
+        lador.add(new Lada(280, 110, 0xFFFFFFFF));
+        lador.add(new Lada(10, 110, 0xFFFFFFFF));
     }
 
     private void draw() {
@@ -90,10 +99,8 @@ public class Graphics extends Canvas implements Runnable {
 
     private void update() {
 
-        b.update(paddle.getBoundingBox());
+        b.update(paddle.getBoundingBox(),lador);
         paddle.update();
-
-
 
 
 
